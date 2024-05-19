@@ -24,9 +24,9 @@ jobs:
 
     - name: Prepare src directory
       run: |
-        mkdir -p src
+        mkdir -p src/vulnerabilities
         cp README.md src/SUMMARY.md
-        cp -r vulnerabilities/* src/
+        cp -r vulnerabilities/* src/vulnerabilities/
 
     - name: List src directory
       run: ls -la src
