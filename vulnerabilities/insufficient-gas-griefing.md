@@ -30,5 +30,3 @@ contract Executor {
     }
 }
 ```
-#### sources
-- testing
