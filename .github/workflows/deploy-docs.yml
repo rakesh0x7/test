@@ -35,11 +35,14 @@ jobs:
       run: ls -la src/vulnerabilities
 
     - name: Build the book
-      run: mdbook build ./src
+      run: mdbook build -d docs src
+
+    - name: List docs directory
+      run: ls -la docs
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./src/book
+        publish_dir: ./docs
         publish_branch: gh-pages
