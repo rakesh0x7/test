@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Documentation to GitHub Pages
 
 on:
   push:
@@ -21,6 +21,13 @@ jobs:
 
     - name: Install mdBook
       run: cargo install mdbook
+
+    - name: Prepare src directory
+      run: |
+        rm -rf src
+        mkdir -p src
+        cp README.md src/SUMMARY.md
+        cp -r vulnerabilities src/
 
     - name: Build the book
       run: mdbook build src
