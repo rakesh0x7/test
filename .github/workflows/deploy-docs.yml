@@ -24,10 +24,12 @@ jobs:
 
     - name: Prepare src directory
       run: |
-        rm -rf src
         mkdir -p src
+        cd src
+        mkdir vulnerabilities
+        cd ..
         cp README.md src/SUMMARY.md
-        cp -r vulnerabilities src/
+        cp -r vulnerabilities/* src/vulnerabilities/
 
     - name: Build the book
       run: mdbook build src
