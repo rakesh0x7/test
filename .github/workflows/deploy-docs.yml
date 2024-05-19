@@ -36,7 +36,7 @@ jobs:
       run: mdbook build
 
     - name: List build output
-      run: ls -la src/book
+      run: ls -la book
 
     - name: Checkout gh-pages branch
       uses: actions/checkout@v3
@@ -48,7 +48,7 @@ jobs:
       run: |
         rm -rf gh-pages/docs
         mkdir -p gh-pages/docs
-        cp -r src/book/* gh-pages/docs/
+        cp -r book/* gh-pages/docs/
 
     - name: Commit and push changes
       run: |
