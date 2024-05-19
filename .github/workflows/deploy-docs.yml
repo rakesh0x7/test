@@ -33,7 +33,7 @@ jobs:
         ls -la src/vulnerabilities
 
     - name: Build the book
-      run: mdbook build src
+      run: mdbook build
 
     - name: List build output
       run: ls -la src/book
