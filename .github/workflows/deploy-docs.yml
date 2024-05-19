@@ -35,7 +35,8 @@ jobs:
       run: ls -la src/vulnerabilities
 
     - name: Build the book
-      run: mdbook build src
+      run: mdbook build ./src/src
+
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
