@@ -31,10 +31,10 @@ jobs:
         ls -la src
         echo "Listing src/vulnerabilities directory:"
         ls -la src/vulnerabilities
-        cd ..
+        
 
     - name: Build the book
-      run: mdbook build src
+      run: mdbook build
 
     - name: Checkout gh-pages branch
       uses: actions/checkout@v3
