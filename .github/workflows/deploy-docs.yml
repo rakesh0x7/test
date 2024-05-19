@@ -27,18 +27,14 @@ jobs:
         mkdir -p src/vulnerabilities
         cp README.md src/SUMMARY.md
         cp -r vulnerabilities/* src/vulnerabilities/
-
-    - name: List src directory
-      run: ls -la src
-
-    - name: List vulnerabilities directory
-      run: ls -la src/vulnerabilities
+        ls -la src
+        ls -la src/vulnerabilities
 
     - name: Build the book
-      run: mdbook build -d docs src
+      run: mdbook build src
 
     - name: List docs directory
-      run: ls -la docs
+      run: ls -la src/book
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
