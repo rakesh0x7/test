@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout main branch
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     - name: Set up Rust
       uses: actions-rs/toolchain@v1
@@ -27,18 +29,31 @@ jobs:
         mkdir -p src/vulnerabilities
         cp README.md src/SUMMARY.md
         cp -r vulnerabilities/* src/vulnerabilities/
-        ls -la src
-        ls -la src/vulnerabilities
+
+    - name: List src directory
+      run: ls -la src
+
+    - name: List vulnerabilities directory
+      run: ls -la src/vulnerabilities
 
     - name: Build the book
       run: mdbook build src
 
-    - name: List docs directory
-      run: ls -la src/book
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
+    - name: Checkout gh-pages branch
+      uses: actions/checkout@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs
-        publish_branch: gh-pages
+        ref: gh-pages
+
+    - name: Copy built book to gh-pages
+      run: |
+        rm -rf docs
+        mkdir docs
+        cp -r src/book/* docs/
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add docs
+        git commit -m 'Update documentation'
+        git push origin gh-pages
