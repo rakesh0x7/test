@@ -1,4 +1,4 @@
-name: Deploy Documentation to GitHub Pages
+name: Deploy Main to GitHub Pages
 
 on:
   push:
@@ -6,6 +6,10 @@ on:
       - main
 
 jobs:
+  job-name:
+    permissions:
+      contents: write
+
   build-deploy:
     runs-on: ubuntu-latest
 
@@ -27,16 +31,9 @@ jobs:
         mkdir -p src/vulnerabilities
         cp README.md src/SUMMARY.md
         cp -r vulnerabilities/* src/vulnerabilities/
-        echo "Listing src directory:"
-        ls -la src
-        echo "Listing src/vulnerabilities directory:"
-        ls -la src/vulnerabilities
-
+        
     - name: Build the book
       run: mdbook build
-
-    - name: List build output
-      run: ls -la book
 
     - name: Checkout gh-pages branch
       uses: actions/checkout@v3
@@ -56,5 +53,5 @@ jobs:
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add docs
-        git commit -m 'Update documentation'
+        git commit -m 'Deploy new changes'
         git push origin gh-pages
