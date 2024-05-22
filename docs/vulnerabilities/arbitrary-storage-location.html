@@ -177,11 +177,6 @@
 <p>Only authorized addresses should have access to write to sensitive storage locations. If there isn't proper authorization checks throughout the contract, a malicious user may be able to overwrite sensitive data. However, even if there are authorization checks for writing to sensitive data, an attacker may still be able to overwrite the sensitive data via insensitive data. This could give an attacker access to overwrite important variables such as the contract owner.</p>
 <p>To prevent this from occurring, we not only want to protect sensitive data stores with authorization requirements, but we also want to ensure that writes to one data structure cannot inadvertently overwrite entries of another data structure.</p>
 <p>For an example, try <a href="https://ethernaut.openzeppelin.com/level/19">Ethernaut - Alien Codex</a>. If it's too hard, see <a href="https://github.com/theNvN/ethernaut-openzeppelin-hacks/blob/main/level_19_Alien-Codex.md">this walkthrough (SPOILER)</a>.</p>
-<h3 id="sources"><a class="header" href="#sources">Sources</a></h3>
-<ul>
-<li>https://swcregistry.io/docs/SWC-124</li>
-<li>https://github.com/Arachnid/uscc/tree/master/submissions-2017/doughoyte</li>
-</ul>
 
                     </main>
 

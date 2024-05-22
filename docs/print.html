@@ -601,15 +601,10 @@ contract SubContract is SuperContract {
 <p>Only authorized addresses should have access to write to sensitive storage locations. If there isn't proper authorization checks throughout the contract, a malicious user may be able to overwrite sensitive data. However, even if there are authorization checks for writing to sensitive data, an attacker may still be able to overwrite the sensitive data via insensitive data. This could give an attacker access to overwrite important variables such as the contract owner.</p>
 <p>To prevent this from occurring, we not only want to protect sensitive data stores with authorization requirements, but we also want to ensure that writes to one data structure cannot inadvertently overwrite entries of another data structure.</p>
 <p>For an example, try <a href="https://ethernaut.openzeppelin.com/level/19">Ethernaut - Alien Codex</a>. If it's too hard, see <a href="https://github.com/theNvN/ethernaut-openzeppelin-hacks/blob/main/level_19_Alien-Codex.md">this walkthrough (SPOILER)</a>.</p>
-<h3 id="sources-18"><a class="header" href="#sources-18">Sources</a></h3>
-<ul>
-<li>https://swcregistry.io/docs/SWC-124</li>
-<li>https://github.com/Arachnid/uscc/tree/master/submissions-2017/doughoyte</li>
-</ul>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="incorrect-inheritance-order"><a class="header" href="#incorrect-inheritance-order">Incorrect Inheritance Order</a></h2>
 <p>In Solidity, it is possible to inherit from multiple sources, which if not properly understood can introduce ambiguity. This ambiguity is known as the Diamond Problem, wherein if two base contracts have the same function, which one should be prioritized? Luckily, Solidity handles this problem gracefully, that is as long as the developer understands the solution.</p>
 <p>The solution Solidity provides to the Diamond Problem is by using reverse C3 linearization. This means that it will linearize the inheritance from right to left, so the order of inheritance matters. It is suggested to start with more general contracts and end with more specific contracts to avoid problems.</p>
-<h3 id="sources-19"><a class="header" href="#sources-19">Sources</a></h3>
+<h3 id="sources-18"><a class="header" href="#sources-18">Sources</a></h3>
 <ul>
 <li>https://consensys.github.io/smart-contract-best-practices/development-recommendations/solidity-specific/complex-inheritance/</li>
 <li>https://solidity.readthedocs.io/en/v0.4.25/contracts.html#multiple-inheritance-and-linearization</li>
@@ -623,7 +618,7 @@ contract SubContract is SuperContract {
 <li>Decreased code readability</li>
 </ul>
 <p>It is highly recommended to remove all unused variables from a code base.</p>
-<h3 id="sources-20"><a class="header" href="#sources-20">Sources</a></h3>
+<h3 id="sources-19"><a class="header" href="#sources-19">Sources</a></h3>
 <ul>
 <li>https://swcregistry.io/docs/SWC-131</li>
 <li>https://github.com/ethereum/solidity/issues/718</li>
@@ -642,7 +637,7 @@ contract SubContract is SuperContract {
 <p>The main cause for concern with this improper implementation is that if it is used with a smart contract that expects an ERC-20 token, it will behave in unexpected ways. It could even get locked in the contract forever.</p>
 <p>Although standards aren't always perfect, and may someday become antiquated, they foster proper expectations to provide for secure smart contracts.</p>
 <p>Suggested by: <a href="https://github.com/RobertMCForster">RobertMCForster</a></p>
-<h3 id="sources-21"><a class="header" href="#sources-21">Sources</a></h3>
+<h3 id="sources-20"><a class="header" href="#sources-20">Sources</a></h3>
 <ul>
 <li>https://finance.yahoo.com/news/bnb-really-erc-20-token-160013314.html</li>
 <li>https://blog.goodaudience.com/binance-isnt-erc-20-7645909069a4</li>
@@ -656,7 +651,7 @@ contract SubContract is SuperContract {
 <p>However, as noted in the <a href="https://ethereum.github.io/yellowpaper/paper.pdf">Ethereum Yellow Paper</a>, "During initialization code execution, EXTCODESIZE on the address should return zero, which is the length of the code of the account while CODESIZE should return the length of the initialization".</p>
 <p><a href="https://github.com/0xKitsune/Ghost-Contract/blob/main/src/Ghost.sol">This repo</a> shows how we may exploit this logic by simply calling during creation of a new contract.</p>
 <p>As we can see, it's important that we recognize that although we may be certain that an account with a non-zero codesize is a contract, we can't be certain that an account with a zero codesize is not a contract.</p>
-<h3 id="sources-22"><a class="header" href="#sources-22">Sources</a></h3>
+<h3 id="sources-21"><a class="header" href="#sources-21">Sources</a></h3>
 <ul>
 <li>https://ethereum.github.io/yellowpaper/paper.pdf</li>
 <li>https://github.com/0xKitsune/Ghost-Contract</li>
@@ -665,7 +660,7 @@ contract SubContract is SuperContract {
 <p>Transactions on Ethereum are grouped together in blocks which are processed on a semi-regular interval, 12 seconds. Before transactions are placed in blocks, they are broadcasted to the mempool where block builders can then proceed to place them as is economically optimal. What's important to understand here is that the mempool is public and thus anyone can see transactions before they're executed, giving them the power to frontrun by placing their own transaction executing the same, or a similar, action with a higher gas price.</p>
 <p>Frontrunning has become prevalent as a result of generalized frontrunning bots becoming more and more common. These generalized frontrunners work by observing the mempool for profitable, replicable transactions which they can replace for their own benefit. <a href="https://www.paradigm.xyz/2020/08/ethereum-is-a-dark-forest">Ethereum is a Dark Forest</a>.</p>
 <p>One solution to transaction-ordering dependence is to use a commit-reveal scheme in the case of information being submitted on-chain. This works by having the submitter send in a hash of the information, storing that on-chain along with the user address so that they may later reveal the answer along with the salt to prove that they were indeed correct. Another solution is to simply use a private mempool such as <a href="https://www.flashbots.net/">Flashbots</a>.</p>
-<h3 id="sources-23"><a class="header" href="#sources-23">Sources</a></h3>
+<h3 id="sources-22"><a class="header" href="#sources-22">Sources</a></h3>
 <ul>
 <li>https://consensys.github.io/smart-contract-best-practices/known_attacks/#front-running-aka-transaction-ordering-dependence</li>
 <li>https://users.encs.concordia.ca/~clark/papers/2019_wtsc_front.pdf</li>
@@ -701,7 +696,7 @@ function payOut() {
 <p>Ethereum transactions require the sender to pay gas to disincentivize spam attacks, but in some situations, there can be enough incentive to go through with such an attack. For example, a block stuffing attack was used on a gambling Dapp, Fomo3D. The app had a countdown timer, and users could win a jackpot by being the last to purchase a key, except every time a user bought a key, the timer would be extended. An attacker bought a key then stuffed the next 13 blocks in a row so they could win the jackpot.</p>
 <p>To prevent such attacks from occurring, it's important to carefully consider whether it's safe to incorporate time-based actions in your application.</p>
 <p>Example from: https://consensys.github.io/smart-contract-best-practices/attacks/denial-of-service/</p>
-<h3 id="sources-24"><a class="header" href="#sources-24">Sources</a></h3>
+<h3 id="sources-23"><a class="header" href="#sources-23">Sources</a></h3>
 <ul>
 <li>https://consensys.github.io/smart-contract-best-practices/attacks/denial-of-service/</li>
 <li>https://github.com/ethereum/wiki/wiki/Design-Rationale#gas-and-fees</li>
@@ -772,7 +767,7 @@ https://consensys.github.io/smart-contract-best-practices/development-recommenda
 <h3 id="unexpected-balance"><a class="header" href="#unexpected-balance">Unexpected Balance</a></h3>
 <p>It's important to take caution in enforcing expected contract balances of tokens or Ether as those balances may be increased by an attacker to cause an unexpected revert. This is easily possible with ERC20 tokens by simply <code>transfer</code>ring to the contract, but is also possible with Ether by <a href="vulnerabilities/./forcibly-sending-ether.html">Forcibly sending Ether to a contract</a>.</p>
 <p>Consider, for example, a contract which expects the Ether balance to be 0 for the first deposit to allow for custom accounting logic. An attacker may forcibly send Ether to the contract before the first deposit, causing all deposits to revert.</p>
-<h3 id="sources-25"><a class="header" href="#sources-25">Sources</a></h3>
+<h3 id="sources-24"><a class="header" href="#sources-24">Sources</a></h3>
 <ul>
 <li>https://consensys.github.io/smart-contract-best-practices/attacks/denial-of-service/</li>
 <li>https://consensys.github.io/smart-contract-best-practices/development-recommendations/general/external-calls/</li>
@@ -796,7 +791,7 @@ function setOwner(bytes32 newOwner, uint8 v, bytes32 r, bytes32 s) external {
 	owner = address(newOwner);
 }
 </code></pre>
-<h3 id="sources-26"><a class="header" href="#sources-26">Sources</a></h3>
+<h3 id="sources-25"><a class="header" href="#sources-25">Sources</a></h3>
 <ul>
 <li>https://docs.soliditylang.org/en/latest/units-and-global-variables.html#mathematical-and-cryptographic-functions</li>
 <li>https://ethereum.stackexchange.com/a/69329</li>
@@ -811,7 +806,7 @@ function setOwner(bytes32 newOwner, uint8 v, bytes32 r, bytes32 s) external {
 </ul>
 <p>It's important to note that the default visibility is <code>public</code>, allowing access externally or internally by any contract or EOA. We can see how this may be a problem if a method is intended to only be accessible internally but is missing a visibility specifier.</p>
 <p>Modern compilers should catch missing function visibility specifiers, but will generally allow missing state variable visibility specifiers. Regardless, it's important to be aware of the possible interactions which may occur as a result of default visibility specifiers for both functions and state variables.</p>
-<h3 id="sources-27"><a class="header" href="#sources-27">Sources</a></h3>
+<h3 id="sources-26"><a class="header" href="#sources-26">Sources</a></h3>
 <ul>
 <li>https://swcregistry.io/docs/SWC-100</li>
 <li>https://swcregistry.io/docs/SWC-108</li>
