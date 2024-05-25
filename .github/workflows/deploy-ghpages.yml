@@ -48,6 +48,12 @@ jobs:
         rm -rf gh-pages/docs
         mkdir -p gh-pages/docs
         cp -r book/* gh-pages/docs/
+        
+    - name: List output after copying
+      run: |
+        ls -alh src/
+        ls -alh gh-pages/docs/
+
 
     - name: Commit and push changes
       env:
