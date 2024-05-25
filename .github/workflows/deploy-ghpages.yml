@@ -28,11 +28,19 @@ jobs:
 
     - name: Prepare src directory
       run: |
-        mkdir -p src/vulnerabilities
+        mkdir -p src
         cp README.md src/index.md  # Set README.md as the index page
-        cp README.md src/SUMMARY.md   # Assuming you want the README as the summary too
-        cp -r vulnerabilities/* src/vulnerabilities/
-        ls -la 
+
+        # Create the SUMMARY.md with a reference to index.md
+        echo "# Summary" > src/SUMMARY.md
+        echo "[Introduction](index.md)" >> src/SUMMARY.md
+        # Add additional chapters or sections as needed
+        # echo "- [Chapter 1](chapter_1.md)" >> src/SUMMARY.md
+        # echo "- [Chapter 2](chapter_2.md)" >> src/SUMMARY.md
+
+        # Copy other content if needed
+        # cp -r other_content/* src/
+        ls -la src
 
     - name: Build the book
       run: mdbook build
@@ -53,7 +61,6 @@ jobs:
       run: |
         ls -alh src/
         ls -alh gh-pages/docs/
-
 
     - name: Commit and push changes
       env:
