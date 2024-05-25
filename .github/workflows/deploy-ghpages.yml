@@ -30,7 +30,7 @@ jobs:
       run: |
         mkdir -p src/vulnerabilities
         cp README.md src/index.md  # Set README.md as the index page
-        cp README.md src/SUMMARY.md  # Assuming you want the README as the summary too
+        cp README.md src/SUMMARY.md src/README.md  # Assuming you want the README as the summary too
         cp -r vulnerabilities/* src/vulnerabilities/
         ls -la 
 
