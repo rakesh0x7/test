@@ -31,9 +31,9 @@ jobs:
         mkdir -p src/vulnerabilities
         cp README.md src/README.md
         echo "[Introduction](README.md)" > src/SUMMARY.md
-        cp README.md >> src/SUMMARY.md
+        cat README.md >> src/SUMMARY.md
         cp -r vulnerabilities/* src/vulnerabilities/
-        
+
     - name: Build the book
       run: mdbook build
 
