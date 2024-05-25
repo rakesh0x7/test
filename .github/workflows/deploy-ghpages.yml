@@ -29,23 +29,11 @@ jobs:
     - name: Prepare src directory
       run: |
         mkdir -p src/vulnerabilities
-        cp README.md src/README.md  # Set README.md as the index page
-
-        # Create the SUMMARY.md with a reference to index.md
-        # echo "# Summary" > src/SUMMARY.md
+        cp README.md src/README.md
         echo "[Introduction](README.md)" > src/SUMMARY.md
-
-        # Add vulnerabilities section
-        echo "- [Vulnerabilities](vulnerabilities/README.md)" >> src/SUMMARY.md
-        for file in vulnerabilities/*.md; do
-          filename=$(basename $file)
-          echo "  - [${filename%.*}](${file})" >> src/SUMMARY.md
-        done
-
-        # Copy vulnerabilities content
+        cp README.md >> src/SUMMARY.md
         cp -r vulnerabilities/* src/vulnerabilities/
-        ls -la src
-
+        
     - name: Build the book
       run: mdbook build
 
@@ -61,11 +49,6 @@ jobs:
         mkdir -p gh-pages/docs
         cp -r book/* gh-pages/docs/
 
-    - name: List output after copying
-      run: |
-        ls -alh src/
-        ls -alh gh-pages/docs/
-
     - name: Commit and push changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,6 +56,9 @@ jobs:
         cd gh-pages
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        
         git add docs
         git commit -m 'Deploy new changes'
         git push origin gh-pages
+
+
