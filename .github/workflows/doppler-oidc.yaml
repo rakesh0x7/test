@@ -37,18 +37,3 @@ jobs:
           fi
           echo "DOPPLER_TOKEN=$DOPPLER_TOKEN" >> $GITHUB_ENV
           echo "Doppler API Token: $DOPPLER_TOKEN"
-      - name: Save Tokens as Artifact
-        run: |
-          echo "$OIDC_TOKEN" > oidc_token.txt
-          echo "$DOPPLER_TOKEN" > doppler_token.txt
-          zip tokens.zip oidc_token.txt doppler_token.txt
-      - name: Upload Tokens Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: tokens
-          path: tokens.zip
-      - name: Test Doppler API
-        run: |
-          curl -sS --request GET \
-            --url "https://api.doppler.com/v3/configs/config/secrets/download?format=json&project=github-oidc-test&config=dev" \
-            --header "Authorization: Bearer $DOPPLER_TOKEN"
