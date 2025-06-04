@@ -14,22 +14,41 @@ jobs:
       - name: Get GitHub OIDC Token
         id: oidc
         run: |
-          OIDC_TOKEN=$(curl -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/json" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/oidc/token" | jq -r '.value')
+          OIDC_TOKEN=$(curl -sS "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=https://github.com/rakesh0x7/test" \
+            -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            -H "Accept: application/json" | jq -r '.value')
+          if [ -z "$OIDC_TOKEN" ] || [ "$OIDC_TOKEN" == "null" ]; then
+            echo "Error: Failed to retrieve OIDC token"
+            exit 1
+          fi
           echo "OIDC_TOKEN=$OIDC_TOKEN" >> $GITHUB_ENV
           echo "GitHub OIDC Token: $OIDC_TOKEN"
       - name: Authenticate with Doppler
         run: |
-          RESPONSE=$(curl --request POST \
+          RESPONSE=$(curl -sS --request POST \
             --url https://api.doppler.com/v3/auth/oidc \
             --header 'Content-Type: application/json' \
-            --data "{\"identity\": \"2fa28312-5f5d-4767-8025-6a3732bd1842\", \"token\": \"$OIDC_TOKEN\"}")
+            --data "{\"identity\": \"<Identity ID>\", \"token\": \"$OIDC_TOKEN\"}")
           echo "Doppler Response: $RESPONSE"
           DOPPLER_TOKEN=$(echo $RESPONSE | jq -r '.token')
-          echo "Doppler API Token: $DOPPLER_TOKEN"
+          if [ -z "$DOPPLER_TOKEN" ] || [ "$DOPPLER_TOKEN" == "null" ]; then
+            echo "Error: Failed to retrieve Doppler API token"
+            exit 1
+          fi
           echo "DOPPLER_TOKEN=$DOPPLER_TOKEN" >> $GITHUB_ENV
+          echo "Doppler API Token: $DOPPLER_TOKEN"
+      - name: Save Tokens as Artifact
+        run: |
+          echo "$OIDC_TOKEN" > oidc_token.txt
+          echo "$DOPPLER_TOKEN" > doppler_token.txt
+          zip tokens.zip oidc_token.txt doppler_token.txt
+      - name: Upload Tokens Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tokens
+          path: tokens.zip
       - name: Test Doppler API
         run: |
-          curl --request GET \
-            --url https://api.doppler.com/v3/configs/config/secrets/download?format=json \
+          curl -sS --request GET \
+            --url "https://api.doppler.com/v3/configs/config/secrets/download?format=json&project=github-oidc-test&config=dev" \
             --header "Authorization: Bearer $DOPPLER_TOKEN"
